@@ -47,11 +47,15 @@ class Doctor (models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
     doctor_id = models.BigIntegerField(null=True, blank=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    introduction = models.TextField(max_length=500, null=True, blank=True, verbose_name='简介')
+    attending = models.TextField(max_length=200, null=True, blank=True, verbose_name='主治范围')
 
 
 # 患者
 class Patient (models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    id_card = models.CharField(max_length=20, null=True, blank=True, verbose_name='身份证号')
+    patient_card = models.CharField(max_length=20, null=True, blank=True, verbose_name='就诊卡号')
 
 
 # 日程表

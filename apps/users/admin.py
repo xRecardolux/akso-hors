@@ -30,35 +30,3 @@ class BaseSetting(object):
 # 注册主题设置
 xadmin.site.register(views.BaseAdminView, BaseSetting)
 
-
-
-# 医院
-# class HospitalAdmin(object):
-#     pass
-#
-#
-# xadmin.site.register(Hospital, HospitalAdmin)
-#
-#
-# # 医生
-# class DoctorAdmin(object):
-#     pass
-#
-#
-# xadmin.site.register(Doctor, DoctorAdmin)
-#
-#
-# # 科室
-# class DepartmentAdmin(object):
-#     pass
-#
-#
-# xadmin.site.register(Department, DepartmentAdmin)
-#
-#
-# # 患者
-# class PatientAdmin(object):
-#     pass
-#
-#
-# xadmin.site.register(Patient, PatientAdmin)

@@ -25,7 +25,7 @@ setup(
         'django-import-export>=0.5.1',
         'httplib2==0.9.2',
         'future',
-        'six'
+        'six', 'djangorestframework'
     ],
     extras_require={
         'Excel': ['xlwt', 'xlsxwriter'],

@@ -1,17 +1,58 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
 from django.conf import settings
 
 
+class HospitalCategory(models.Model):
+    """
+    科室分级目录
+    """
+    hospital_Category_Type = (
+        (1, "一级目录"),
+        (2, "二级目录"),
+        (3, "三级目录")
+    )
+    name = models.CharField('类别名', default="", max_length=30,help_text="类别名")
+    code = models.CharField("类别code", default="", max_length=30,help_text="类别code")
+    desc = models.TextField("类别描述", default="", help_text="类别描述")
+    # 目录树级别
+    category_type = models.IntegerField("类目级别", choices=hospital_Category_Type, help_text="类目级别")
+    # 设置models有一个指向自己的外键
+    parent_category = models.ForeignKey("self", on_delete=models.CASCADE,
+                                        null=True, blank=True,
+                                        verbose_name="父类目级别", help_text="父目录", related_name="sub_cat")
+    create_time = models.DateTimeField('创建时间', default=datetime.now)
+    update_time = models.DateTimeField('更新时间', auto_now=True)
+
+    class Meta:
+        verbose_name = "科室类别"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
 # 医院
 class Hospital(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    hospital_id = models.BigIntegerField('医院id', null=True, blank=True)
-    hospital_name = models.CharField('医院名', max_length=100)
+
+    """
+    医院详情信息
+    """
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                                primary_key=True, related_name='hospital', verbose_name='用户名')
+    department_category = models.ForeignKey(HospitalCategory, on_delete=models.CASCADE, verbose_name='科室类别')
+    hospital_name = models.CharField('医院名', max_length=100, null=True, blank=True)
+    province = models.CharField('省', max_length=100, null=True, blank=True)
+    city = models.CharField('市', max_length=100, null=True, blank=True)
+    area = models.CharField('区', max_length=100, null=True, blank=True)
+    address = models.CharField('地址', max_length=255, null=True, blank=True)
     latitude = models.DecimalField('经度', max_digits=5, decimal_places=2, null=True, blank=True)
     longitude = models.DecimalField('纬度', max_digits=5, decimal_places=2, null=True, blank=True)
+    create_time = models.DateTimeField('创建时间', default=datetime.now)
+    update_time = models.DateTimeField('更新时间', auto_now=True)
 
     class Meta:
         verbose_name = '医院信息'
@@ -23,8 +64,15 @@ class Hospital(models.Model):
 
 # 科室
 class Department(models.Model):
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
-    department_name = models.CharField('科室名称', max_length=50, unique=True)
+    """
+    医院下科室信息
+    """
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, verbose_name='医院')
+    department_category = models.ForeignKey(HospitalCategory, on_delete=models.CASCADE,
+                                            related_name='department', verbose_name='科室类别')
+    department_name = models.CharField('科室名称', max_length=50, null=True, blank=True)
+    create_time = models.DateTimeField('创建时间', default=datetime.now)
+    update_time = models.DateTimeField('更新时间', auto_now=True)
 
     class Meta:
         verbose_name = '科室信息'
@@ -32,4 +80,26 @@ class Department(models.Model):
 
     def __str__(self):
         return self.department_name
+
+
+# 门诊
+class Outpatient(models.Model):
+    """
+    科室门诊部
+    """
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name='科室')
+    department_category = models.ForeignKey(HospitalCategory, on_delete=models.CASCADE,
+                                            related_name='outpatient', verbose_name='科室类别')
+    outpatient_name = models.CharField(max_length=50, null=True, blank=True, verbose_name='门诊名称')
+    create_time = models.DateTimeField('创建时间', default=datetime.now)
+    update_time = models.DateTimeField('更新时间', auto_now=True)
+
+    class Meta:
+        verbose_name = '门诊信息'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.outpatient_name
+
+
 
