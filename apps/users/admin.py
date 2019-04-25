@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 import xadmin
 from xadmin import views
-# from .models import Hospital, Department, Doctor, Patient
+from .models import Doctor, Patient
 
 
 class GlobalSetting (object):
@@ -16,9 +16,6 @@ class GlobalSetting (object):
     # menu_style = 'accordion'
 
 
-xadmin.site.register(views.CommAdminView, GlobalSetting)
-
-
 class BaseSetting(object):
     # 启用主题管理器   
     enable_themes = True
@@ -27,6 +24,17 @@ class BaseSetting(object):
     use_bootswatch = True
 
 
+class DoctorAdmin(object):
+    pass
+
+
+class PatientAdmin(object):
+    pass
+
+
+# 全局设置 注册
+xadmin.site.register(views.CommAdminView, GlobalSetting)
 # 注册主题设置
 xadmin.site.register(views.BaseAdminView, BaseSetting)
-
+xadmin.site.register(Doctor, DoctorAdmin)
+xadmin.site.register(Patient, PatientAdmin)

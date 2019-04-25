@@ -6,18 +6,23 @@ from .models import Hospital, Department, Outpatient, HospitalCategory
 
 
 class HospitalAdmin(object):
-    list_display = ["hospital_name", "latitude", "longitude"]
-
-    search_fields = ["hospital_name", ]
+    list_display = ["user", "hospital_name", "department_category",
+                    "province", "city", "area", "address", "update_time"]
+    list_filter = ["province", "city", "area"]
+    search_fields = ["hospital_name", "province", "city", "area", ]
 
 
 class DepartmentAdmin(object):
 
-    list_display = ["department_name", ]
+    list_display = ["hospital", "department_category", "department_name", "create_time", "update_time"]
+    list_filter = ["hospital", "department_category", "department_name"]
+    search_fields = ["hospital", "department_name"]
 
 
 class OutpatientAdmin(object):
-    list_display = ["outpatient_name"]
+    list_display = ["department", "outpatient_name", "create_time", "update_time"]
+    list_filter = ["department", "outpatient_name"]
+    # search_fields = ["hospital", "department_name"]
 
 
 class DepartmentCategoryAdmin(object):

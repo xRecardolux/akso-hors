@@ -14,6 +14,8 @@ import os
 import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
@@ -47,7 +49,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'reversion',
     'users',
-    'hospital'
+    'hospital',
+    'appointment'
 ]
 
 MIDDLEWARE = [
@@ -122,7 +125,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+# 自定义登陆模块
+# AUTHENTICATION_BACKENDS = (
+#     'users.views.CustomBackend',
+# )
+#
+# JWT_AUTH= {
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+#     'JWT_AUTH_HEADER_PREFIX':'JWT'
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

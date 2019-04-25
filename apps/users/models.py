@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
 
-from hospital.models import Department, Hospital
+from hospital.models import Department, Hospital, Outpatient
 from django.conf import settings
 
 # Create your models here.
@@ -45,10 +45,15 @@ class UserPro(AbstractUser):
 # 医生
 class Doctor (models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    doctor_id = models.BigIntegerField(null=True, blank=True)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    doctor_id = models.BigIntegerField(null=True, blank=True, verbose_name='医生工号')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name='科室')
+    outpatient = models.ForeignKey(Outpatient, on_delete=models.CASCADE, verbose_name='诊室')
     introduction = models.TextField(max_length=500, null=True, blank=True, verbose_name='简介')
     attending = models.TextField(max_length=200, null=True, blank=True, verbose_name='主治范围')
+
+    class Meta:
+        verbose_name = "医生"
+        verbose_name_plural = verbose_name
 
 
 # 患者
@@ -57,28 +62,6 @@ class Patient (models.Model):
     id_card = models.CharField(max_length=20, null=True, blank=True, verbose_name='身份证号')
     patient_card = models.CharField(max_length=20, null=True, blank=True, verbose_name='就诊卡号')
 
-
-# 日程表
-class DaySchedule (models.Model):
-    MONDAY = 1
-    TUESDAY = 2
-    WEDNESDAY = 3
-    THURSDAY = 4
-    FRIDAY = 5
-    SATURDAY = 6
-    SUNDAY = 7
-    DAYS = (
-        (MONDAY, '周一'),
-        (TUESDAY, '周二'),
-        (WEDNESDAY, '周三'),
-        (THURSDAY, '周四'),
-        (FRIDAY, '周五'),
-        (SATURDAY, '周六'),
-        (SUNDAY, '周天'),
-    )
-    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    doctor = models.OneToOneField(Doctor, on_delete=models.CASCADE)
-    day = models.PositiveSmallIntegerField(choices=DAYS)
-    time_slot_from = models.TimeField()
-    time_slot_to = models.TimeField()
+    class Meta:
+        verbose_name = "患者"
+        verbose_name_plural = verbose_name
