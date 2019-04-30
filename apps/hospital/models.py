@@ -41,8 +41,7 @@ class Hospital(models.Model):
     """
     医院详情信息
     """
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-                                primary_key=True, verbose_name='用户名')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True, verbose_name='账户')
     department_category = models.ForeignKey(HospitalCategory, on_delete=models.CASCADE,
                                             related_name='hospital', verbose_name='机构类别')
     hospital_name = models.CharField('医院名', max_length=100, null=True, blank=True)
@@ -76,6 +75,10 @@ class Department(models.Model):
     update_time = models.DateTimeField('更新时间', auto_now=True)
 
     class Meta:
+        # 联合索引 限制医院出现两个同名科室
+        unique_together = (
+            ('hospital', 'department_name'),
+        )
         verbose_name = '科室信息'
         verbose_name_plural = verbose_name
 
@@ -96,6 +99,10 @@ class Outpatient(models.Model):
     update_time = models.DateTimeField('更新时间', auto_now=True)
 
     class Meta:
+        # 联合索引 限制同一医院下同一科室重复绑定门诊
+        unique_together = (
+            ('department', 'outpatient_name')
+        )
         verbose_name = '门诊信息'
         verbose_name_plural = verbose_name
 

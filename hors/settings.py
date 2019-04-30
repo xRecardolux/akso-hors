@@ -32,7 +32,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'xadmin',
+    'aliyunsdkcore',
     'crispy_forms',
     'reversion',
     'users',
@@ -84,18 +84,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hors.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',     # 数据库引擎
-        'NAME': 'hors',    # 数据库名
-        'USER': 'randolph',     # 用户名
+        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+        'NAME': 'hors',  # 数据库名
+        'USER': 'randolph',  # 用户名
         'PASSWORD': 'Randolph@2019',  # 密码
         'HOST': '120.77.156.156',  # mysql服务所在的主机ip
-        'PORT': '3306',         # mysql服务端口
+        'PORT': '3306',  # mysql服务端口
     }
 }
 
@@ -126,14 +125,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 # 自定义登陆模块
-# AUTHENTICATION_BACKENDS = (
-#     'users.views.CustomBackend',
-# )
-#
-# JWT_AUTH= {
-#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
-#     'JWT_AUTH_HEADER_PREFIX':'JWT'
-# }
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT'
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -148,10 +147,12 @@ USE_L10N = True
 
 USE_TZ = False
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.UserPro'
+
+# 手机号码正则表达式
+REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"

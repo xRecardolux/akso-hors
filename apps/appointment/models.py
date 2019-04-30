@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime
 from hospital.models import Outpatient
-from users.models import Doctor, Patient
+from users.models import Doctor, Patient, UserPro
 
 # Create your models here.
 
@@ -30,10 +30,17 @@ class DoctorSchedule(models.Model):
     date = models.DateField(verbose_name='日期')
     # 剩余号量
     residual_num = models.IntegerField(verbose_name='剩余号量')
+    patients = models.IntegerField(default=0, verbose_name='就诊人数')
 
     class Meta:
+        unique_together = (
+            ('doctor', 'time_range', 'date')
+        )
         verbose_name = "时刻表"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.get_time_range_display()
 
 
 class Appointment(models.Model):
@@ -60,5 +67,11 @@ class Appointment(models.Model):
     create_time = models.DateTimeField(default=datetime.now, verbose_name='创建时间')
 
     class Meta:
+        unique_together = (
+            ('patient', 'appointment')
+        )
         verbose_name = "预约就诊"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.patient.patient_name

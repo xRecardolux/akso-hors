@@ -44,11 +44,12 @@ class HospitalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Hospital
-        fields = '__all__'
+        exclude = ('user', )
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
-    department_category = CategorySerializer1st()
+    hospital = HospitalSerializer()
+    department_category = CategorySerializer2nd()
 
     class Meta:
         model = Department
@@ -56,7 +57,8 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 
 class OutpatientSerializer(serializers.ModelSerializer):
-    department_category = CategorySerializer1st()
+    department = DepartmentSerializer()
+    department_category = CategorySerializer3rd()
 
     class Meta:
         model = Outpatient

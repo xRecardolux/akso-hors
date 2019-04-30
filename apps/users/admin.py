@@ -25,11 +25,15 @@ class BaseSetting(object):
 
 
 class DoctorAdmin(object):
-    pass
+    list_display = ["user", "hospital", "department", "outpatient"]
+    list_filter = ["user", "user", "hospital", "department", "outpatient"]
+    search_fields = ["hospital", "department_name", "outpatient"]
 
 
 class PatientAdmin(object):
-    pass
+    list_display = ["user", "patient_card"]
+    list_filter = []
+    search_fields = []
 
 
 # 全局设置 注册

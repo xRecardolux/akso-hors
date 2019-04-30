@@ -22,22 +22,28 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
-from hospital.views import CategoryViewSet, HospitalView
+from users.views import SmsCodeViewSet, UserViewSet
+from hospital.views import CategoryViewSet, HospitalViewSet
+from appointment.views import DoctorScheduleViewSet, AppointmentViewSet
 
 
 router = DefaultRouter()
-router.register(r'hospital', HospitalView, base_name='hospital')
+router.register(r'hospital', HospitalViewSet, base_name='hospital')
 router.register(r'category', CategoryViewSet, base_name='category')
+router.register(r'schedule', DoctorScheduleViewSet, base_name='schedule')
+router.register(r'appointment', AppointmentViewSet, base_name='appointment')
+router.register(r'code', SmsCodeViewSet, base_name="code")
+router.register(r'user', UserViewSet, base_name="user")
 
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
-    path('api-token-auth/', views.obtain_auth_token),
+    # path('api-token-auth/', views.obtain_auth_token),
     path('login/', obtain_jwt_token),
     path('api-auth/', include('rest_framework.urls')),
     path('docs/', include_docs_urls(title='Akso医院预约系统')),
     re_path('^', include(router.urls)),
-    path('hospital/', HospitalView.as_view(), name='hospital-page'),
+    # path('hospital/', HospitalView.as_view(), name='hospital-page'),
 
 ]
