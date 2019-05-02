@@ -44,7 +44,7 @@ class UserPro(AbstractUser):
 
 # 医生
 class Doctor (models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True, verbose_name='账户')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='账户')
     doctor_id = models.BigIntegerField(null=True, blank=True, verbose_name='医生工号')
     doctor_name = models.CharField(max_length=50, null=False, blank=False, verbose_name='姓名')
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, verbose_name='医院')
@@ -63,7 +63,7 @@ class Doctor (models.Model):
 
 # 患者
 class Patient (models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True, verbose_name='账户')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='账户')
     patient_name = models.CharField(max_length=50, null=False, blank=False, verbose_name='姓名')
     id_card = models.CharField(max_length=20, null=True, blank=True, verbose_name='身份证号')
     patient_card = models.CharField(max_length=20, null=True, blank=True, verbose_name='就诊卡号')

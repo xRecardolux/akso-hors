@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from datetime import datetime
 from hospital.models import Outpatient
 from users.models import Doctor, Patient, UserPro
@@ -57,10 +58,10 @@ class Appointment(models.Model):
         (WAITING, '等待'),
         (FAILURE, '失效')
     )
+    order_no = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name='订单号')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, verbose_name='账户')
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE, verbose_name='患者')
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, verbose_name='医生')
-    outpatient = models.ForeignKey(Outpatient, on_delete=models.CASCADE, verbose_name='诊室')
-    appointment = models.ForeignKey(DoctorSchedule, on_delete=models.CASCADE, verbose_name='预约时刻表')
+    doctor_schedule = models.ForeignKey(DoctorSchedule, on_delete=models.CASCADE, verbose_name='预约时刻表')
     # 就诊码
     token_no = models.IntegerField(verbose_name='就诊码')
     status = models.PositiveIntegerField(choices=STATUS_CODES, verbose_name='状态')
@@ -68,10 +69,10 @@ class Appointment(models.Model):
 
     class Meta:
         unique_together = (
-            ('patient', 'appointment')
+            ('patient', 'doctor_schedule')
         )
         verbose_name = "预约就诊"
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.patient.patient_name
+        return str(self.order_no)

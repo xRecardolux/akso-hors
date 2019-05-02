@@ -8,8 +8,8 @@ import json
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
 
-ACCESS_KEY_ID = 'LTAImqe*****'
-ACCESS_KEY_SECRET = '******KZz3f58Q3RYJ*******'
+ACCESS_KEY_ID = ''
+ACCESS_KEY_SECRET = ''
 
 
 def send_verify_sms(mobile, params=None):
@@ -26,7 +26,7 @@ def send_verify_sms(mobile, params=None):
     request.add_query_param('RegionId', 'cn-hangzhou')
     request.add_query_param('PhoneNumbers', mobile)
     request.add_query_param('SignName', 'Akso预约平台')
-    request.add_query_param('TemplateCode', 'SMS_164506483')
+    request.add_query_param('TemplateCode', 'SMS_164475402')
     if params is not None:
         request.add_query_param('TemplateParam', params)
 

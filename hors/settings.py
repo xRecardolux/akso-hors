@@ -92,7 +92,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
         'NAME': 'hors',  # 数据库名
         'USER': 'randolph',  # 用户名
-        'PASSWORD': 'Randolph@2019',  # 密码
+        'PASSWORD': '',  # 密码
         'HOST': '120.77.156.156',  # mysql服务所在的主机ip
         'PORT': '3306',  # mysql服务端口
     }

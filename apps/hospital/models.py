@@ -41,7 +41,8 @@ class Hospital(models.Model):
     """
     医院详情信息
     """
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True, verbose_name='账户')
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='账户')
     department_category = models.ForeignKey(HospitalCategory, on_delete=models.CASCADE,
                                             related_name='hospital', verbose_name='机构类别')
     hospital_name = models.CharField('医院名', max_length=100, null=True, blank=True)

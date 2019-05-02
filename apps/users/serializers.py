@@ -55,6 +55,11 @@ class UserRegSerializer(serializers.ModelSerializer):
     username = serializers.CharField(label="用户名", help_text="用户名", required=True, allow_blank=False,
                                      validators=[UniqueValidator(queryset=User.objects.all(), message="用户已经存在")])
 
+    # 输入密码的时候不显示明文
+    password = serializers.CharField(
+        style={'input_type': 'password'}, label="密码", write_only=True
+    )
+
     # 验证code
     def validate_code(self, code):
         # 用户注册，已post方式提交注册信息，post的数据都保存在initial_data里面
@@ -65,8 +70,8 @@ class UserRegSerializer(serializers.ModelSerializer):
             # 最近的一个验证码
             last_record = verify_records[0]
             # 有效期为五分钟。
-            two_minutes_ago = datetime.now() - timedelta(hours=0, minutes=2, seconds=0)
-            if two_minutes_ago > last_record.add_time:
+            five_minutes_ago = datetime.now() - timedelta(hours=0, minutes=5, seconds=0)
+            if five_minutes_ago > last_record.add_time:
                 raise serializers.ValidationError("验证码过期")
 
             if last_record.code != code:
@@ -85,7 +90,7 @@ class UserRegSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'code', 'mobile')
+        fields = ('username', 'code', 'mobile', 'password')
 
 
 class DoctorSerializer(serializers.ModelSerializer):

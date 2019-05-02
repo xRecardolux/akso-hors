@@ -10,7 +10,22 @@ from .models import Appointment, DoctorSchedule
 from users.models import Patient, Doctor
 from hospital.models import Outpatient
 from hospital.serializers import OutpatientSerializer
-from users.serializers import DoctorSerializer
+from users.serializers import DoctorSerializer, PatientSerializer
+
+
+class DoctorScheduleSerializer(serializers.ModelSerializer):
+
+    doctor = DoctorSerializer()
+    outpatient = OutpatientSerializer()
+    time_range = serializers.ChoiceField(choices=DoctorSchedule.TIME_RANGE, source="get_time_range_display")
+
+    class Meta:
+        model = DoctorSchedule
+        fields = '__all__'
+
+
+class ScheduleAppointmentSerializer(serializers.ModelSerializer):
+    pass
 
 
 class AppointmentSerializer(serializers.Serializer):
@@ -19,13 +34,13 @@ class AppointmentSerializer(serializers.Serializer):
         default=serializers.CurrentUserDefault
     )
     # patient是一个外键，可以通过这方法获取patient object中所有的值
-    # patient = serializers.PrimaryKeyRelatedField(required=True, queryset=Patient.objects.all())
+    # patient = Patient.objects.filter(user=user)
     # doctor = serializers.PrimaryKeyRelatedField(required=True, queryset=Doctor.objects.all())
     # outpatient = serializers.PrimaryKeyRelatedField(required=True, queryset=Outpatient.objects.all())
-    appointment = serializers.PrimaryKeyRelatedField(required=True, queryset=Appointment.objects.all())
+    doctor_schedule = serializers.PrimaryKeyRelatedField(required=True, queryset=Appointment.objects.all())
 
     def create(self, validated_data):
-        patient = self.context["request"].user
+        user = self.context["request"].user
 
 
     def update(self, instance, validated_data):
@@ -36,18 +51,4 @@ class AppointmentSerializer(serializers.Serializer):
         fields = '__all__'
 
 
-class DoctorScheduleSerializer(serializers.ModelSerializer):
 
-    doctor = DoctorSerializer()
-    outpatient = OutpatientSerializer()
-    time_range = serializers.ChoiceField(choices=DoctorSchedule.TIME_RANGE, source="get_time_range_display")
-
-    def create(self, validated_data):
-        pass
-
-    def update(self, instance, validated_data):
-        pass
-
-    class Meta:
-        model = DoctorSchedule
-        fields = '__all__'
